@@ -1,0 +1,123 @@
+1) Create Vue Project:
+vue create emi-calculator
+cd emi-calculator
+------
+2)Set up InputForm.vue:
+<!-- InputForm.vue -->
+<template>
+  <div>
+    <!-- Your input form elements go here -->
+    <button @click="calculateEMI">Calculate EMI</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // Add data properties for loan amount, interest rate, tenure, etc.
+    };
+  },
+  methods: {
+    calculateEMI() {
+      // Implement EMI calculation logic and emit the results
+      this.$emit('emi-calculated', { emi: calculatedEMI, interest: calculatedInterest, total: totalPayable });
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* Your component styles go here */
+</style>
+-----------------------------------------------------------------------------------------------------------------------------------
+3)Set up ResultDisplay.vue:
+<!-- ResultDisplay.vue -->
+<template>
+  <div>
+    <!-- Display EMI, interest, total payable, and pie chart here -->
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    emi: Number,
+    interest: Number,
+    total: Number,
+  },
+  // You can use chart libraries here to display a pie chart
+};
+</script>
+
+<style scoped>
+/* Your component styles go here */
+</style>
+--------------------------------------------------------------------------------------------------------
+Set up TableDisplay.vue:
+<!-- TableDisplay.vue -->
+<template>
+  <div>
+    <!-- Display table with balance and tenure here -->
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    // Add props for balance and tenure data
+  },
+};
+</script>
+
+<style scoped>
+/* Your component styles go here */
+</style>
+---------------------------------------------------------------------------------------------------------
+Set up App.vue:
+<!-- App.vue -->
+<template>
+  <div id="app">
+    <InputForm @emi-calculated="updateResults" />
+    <ResultDisplay :emi="emi" :interest="interest" :total="total" />
+    <TableDisplay :balance="balanceData" :tenure="tenureData" />
+  </div>
+</template>
+
+<script>
+import InputForm from '@/components/InputForm.vue';
+import ResultDisplay from '@/components/ResultDisplay.vue';
+import TableDisplay from '@/components/TableDisplay.vue';
+
+export default {
+  components: {
+    InputForm,
+    ResultDisplay,
+    TableDisplay,
+  },
+  data() {
+    return {
+      emi: 0,
+      interest: 0,
+      total: 0,
+      balanceData: [], // Add sample data for balance
+      tenureData: [], // Add sample data for tenure
+    };
+  },
+  methods: {
+    updateResults(data) {
+      this.emi = data.emi;
+      this.interest = data.interest;
+      this.total = data.total;
+      // Update balanceData and tenureData based on your calculations
+    },
+  },
+};
+</script>
+
+<style>
+/* Your global styles go here */
+</style>
+----------------------------------------------------------------------------------------------------
+Run your application:
+npm run serve
